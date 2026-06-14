@@ -1,0 +1,140 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Raja Contact Hub</title>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;600;700&display=swap" rel="stylesheet">
+    <style>
+        :root {
+            --bg: #0b1020;
+            --card: rgba(255,255,255,.08);
+            --border: rgba(255,255,255,.15);
+            --text: #fff;
+            --muted: #cbd5e1;
+            --grad: linear-gradient(135deg,#7c3aed,#06b6d4);
+        }
+        * { margin:0; padding:0; box-sizing:border-box; font-family:'Poppins',sans-serif; }
+        body { min-height:100vh; background:linear-gradient(135deg,#0b1020,#111827); color:var(--text); padding-bottom: 50px; }
+
+        nav { display:flex; justify-content:space-between; align-items:center; padding:20px 8%; backdrop-filter:blur(10px); }
+        .logo { font-size:24px; font-weight:700; }
+        .logo span { color:#06b6d4; }
+        nav ul { display:flex; list-style:none; gap:25px; }
+        nav a { color:white; text-decoration:none; transition: 0.3s; }
+        nav a:hover { color:#06b6d4; }
+
+        .container { display:flex; justify-content:center; padding:40px 20px; }
+        .card { width:100%; max-width:1000px; display:grid; grid-template-columns:1fr 1.5fr; background:var(--card); border:1px solid var(--border); border-radius:20px; overflow:hidden; }
+        
+        .info { padding:40px; background:rgba(255,255,255,.03); border-right: 1px solid var(--border); }
+        .form { padding:40px; }
+        
+        input, textarea { width:100%; padding:14px; margin-bottom:15px; border:none; border-radius:10px; background:rgba(255,255,255,.06); color:white; outline:none; }
+        button { width:100%; padding:14px; border:none; border-radius:10px; background:var(--grad); color:white; font-weight:600; cursor:pointer; }
+
+        .todo-section { max-width: 1000px; margin: 20px auto; padding: 35px; background: var(--card); border: 1px solid var(--border); border-radius: 20px; }
+        
+        .todo-item { display: flex; justify-content: space-between; align-items: center; padding: 8px 0; border-bottom: 1px solid var(--border); }
+        
+        .btn-delete {
+            background: #ef4444; 
+            border: none; 
+            border-radius: 4px; 
+            color: white; 
+            cursor: pointer; 
+            padding: 4px 10px; 
+            font-size: 12px;
+            width: auto !important; 
+            margin-left: 10px;
+            flex-shrink: 0; 
+        }
+
+        footer { text-align: center; padding: 40px; color: var(--muted); }
+        @media(max-width:768px) { .card { grid-template-columns:1fr; } }
+    </style>
+</head>
+<body>
+
+<nav>
+    <div class="logo">Web Development Task-2</div>
+    <ul>
+        <li><a href="#"><i class="fas fa-home"></i> Home</a></li>
+        <li><a href="#"><i class="fas fa-envelope"></i> Contact</a></li>
+    </ul>
+</nav>
+
+<div class="container">
+    <div class="card">
+        <div class="info">
+            <h2>Contact Details</h2>
+            <p style="margin-top:20px;"><i class="fas fa-envelope" style="color:#06b6d4;"></i> rajababunuq@gmail.com</p>
+            <p style="margin-top:15px;"><i class="fas fa-phone" style="color:#06b6d4;"></i> +91 0000000000</p>
+            <p style="margin-top:15px;"><i class="fas fa-map-marker-alt" style="color:#06b6d4;"></i> Ramgarh, Jharkhand</p>
+        </div>
+        <div class="form">
+            <h2>Contact Form</h2>
+            <form id="contactForm">
+                <input type="text" placeholder="Full Name" required>
+                <input type="email" id="email" placeholder="Email Address" required>
+                <div id="previewArea" style="margin-bottom: 15px; color: #06b6d4; font-weight: 600; min-height: 20px;"></div>
+                <button type="submit">Submit</button>
+                <div id="statusMessage" style="margin-top:15px; color:#4ade80; display:none; text-align:center;">Successfully Submitted!</div>
+            </form>
+        </div>
+    </div>
+</div>
+
+<div class="todo-section">
+    <h2>To-Do List</h2>
+    <input type="text" id="todoInput" placeholder="Add a new task..." style="color:white; padding:10px; margin-top:10px; border:none; background:rgba(255,255,255,.06); border-radius:5px; width: 80%;">
+    <button id="addTodoBtn" style="width: auto; padding: 10px 20px;">Add</button>
+    <ul id="todoList" style="list-style: none; margin-top: 20px;"></ul>
+</div>
+
+<footer>
+    <p>&copy; 2026 Designed By Raja kumar gupata</p>
+</footer>
+
+<script>
+    const contactForm = document.getElementById('contactForm');
+    const statusMessage = document.getElementById('statusMessage');
+    const emailInput = document.getElementById('email');
+    const previewArea = document.getElementById('previewArea');
+
+    contactForm.addEventListener('submit', (e) => {
+        e.preventDefault(); 
+        statusMessage.style.display = 'block';
+        contactForm.reset();
+        previewArea.textContent = "";
+        setTimeout(() => { statusMessage.style.display = 'none'; }, 3000);
+    });
+
+    emailInput.addEventListener('input', (e) => {
+        previewArea.textContent = e.target.value;
+    });
+
+    const todoInput = document.getElementById('todoInput');
+    const addBtn = document.getElementById('addTodoBtn');
+    const todoList = document.getElementById('todoList');
+
+    addBtn.addEventListener('click', () => {
+        const taskValue = todoInput.value.trim();
+        if (taskValue !== "") {
+            const li = document.createElement('li');
+            li.className = 'todo-item';
+            li.innerHTML = `
+                <span style="color: white; overflow: hidden; text-overflow: ellipsis;">${taskValue}</span>
+                <button class="btn-delete" onclick="this.parentElement.remove()">DELETE</button>
+            `;
+            todoList.appendChild(li);
+            todoInput.value = "";
+        }
+    });
+
+    todoInput.addEventListener("keypress", (e) => { if (e.key === "Enter") addBtn.click(); });
+</script>
+
+</body>
+</html>
